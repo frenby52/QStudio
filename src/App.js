@@ -7,7 +7,7 @@ const initialMargin = 4;
 const margin = 4;
 const backGroundColor = `red`;
 const colors = ['green', 'blue'];
-const hoverColors=['blue', 'green'];
+const hoverColors=['blue', 'green', `yellow`];
 const colorWidth= 6;
 
 const App = () => {
@@ -30,37 +30,31 @@ class ColoredUserpic extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = { colors: this.props.colors};
+    this.state = { isHovered: false};
     this._handleMouseHover = this._handleMouseHover.bind(this);
   }
 
   _handleMouseHover() {
-    const compare = function (a1, a2) {
-      return a1.length === a2.length && a1.every((v,i)=>v === a2[i])
-    };
-
-    const newColors = compare(this.state.colors, this.props.colors) !== true ? this.props.colors : this.props.hoverColors;
-
     this.setState({
-      colors: newColors
+      isHovered: !this.state.isHovered
     });
   }
 
   render() {
-    const { colors } = this.state;
-    const { src, backGroundColor, colorWidth, size, margin } = this.props;
+    const { isHovered } = this.state;
+    const { src, backGroundColor, colorWidth, size, margin, hoverColors, colors } = this.props;
     const picSize = size - initialMargin * 2 - colorWidth * 2;
 
     return (
       <div className="wrapper" >
-        <div className="gradient_container" style={{ border: `${colorWidth}px solid transparent`, backgroundImage: `linear-gradient(to right, ${colors[0]}, ${colors[1]})` }}>
+        <div className="gradient_container" style={{ border: `${colorWidth}px solid transparent`, backgroundImage: `linear-gradient(to right, ${isHovered ? hoverColors : colors}` }}
+             onMouseEnter={this._handleMouseHover}
+             onMouseLeave={this._handleMouseHover}
+        >
           <div className="bg_container" style={{ backgroundColor: backGroundColor }}>
             <img className="userpic" alt={`userpic`}
               src={src}
-              style={{ height: `${picSize}px`, width: `${picSize}px`, margin: margin}}
-              onMouseEnter={this._handleMouseHover}
-              onMouseLeave={this._handleMouseHover}
-            />
+              style={{ height: `${picSize}px`, width: `${picSize}px`, margin: margin}}/>
           </div>
         </div>
       </div>
