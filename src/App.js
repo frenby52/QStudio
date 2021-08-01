@@ -35,9 +35,7 @@ class ColoredUserpic extends React.PureComponent {
   }
 
   _handleMouseHover() {
-    this.setState({
-      isHovered: !this.state.isHovered
-    });
+    this.setState((prevState) => ({ isHovered: !prevState.isHovered }));
   }
 
   render() {
